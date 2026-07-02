@@ -1,0 +1,39 @@
+# mise tasks for the `cats` example. Run `mise tasks` to list them.
+#
+# Odin isn't distributed through mise's default registries, so install the
+# compiler yourself (https://odin-lang.org/docs/install/) and make sure `odin`
+# and `odinfmt` are on your PATH. These tasks then wrap the common commands so
+# the required vet flags are never forgotten.
+
+[env]
+# The vet flags every build/check must pass (§2 of the style guide). Kept in
+# one place so `build`, `run`, and `check` stay in sync.
+ODIN_VET_FLAGS = "-vet -strict-style -vet-tabs -disallow-do -warnings-as-errors"
+
+[tasks.build]
+description = "Build the CLI with the required vet flags"
+run = "odin build . $ODIN_VET_FLAGS"
+
+[tasks.run]
+description = "Build and run the CLI (pass args after --, e.g. `mise run run -- list`)"
+run = "odin run . $ODIN_VET_FLAGS --"
+
+[tasks.check]
+description = "Type-check without producing a binary"
+run = "odin check . $ODIN_VET_FLAGS"
+
+[tasks.test]
+description = "Run the package tests"
+run = "odin test . $ODIN_VET_FLAGS"
+
+[tasks.fmt]
+description = "Format all Odin files in place (odinfmt.json controls the rules)"
+run = "odinfmt -w ."
+
+[tasks.fmt-check]
+description = "Fail if any file isn't formatted (useful in CI)"
+run = "odinfmt -w . && git diff --exit-code -- '*.odin'"
+
+[tasks.clean]
+description = "Remove build artifacts"
+run = "rm -f cats cats.bin"

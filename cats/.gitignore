@@ -1,0 +1,16 @@
+*.exe
+*.ll
+*.obj
+*.pdb
+
+# Compiled binary (matches the `clean` task in mise.toml)
+/cats
+/cats.bin
+
+**.exp
+ols.json
+
+.vscode
+.idea
+
+bin/

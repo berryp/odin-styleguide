@@ -1,0 +1,7 @@
+{
+	"cats": [
+		{ "name": "Klucke", "age": 3 },
+		{ "name": "Mittens", "age": 7 },
+		{ "name": "Sylvester", "age": 5 }
+	]
+}

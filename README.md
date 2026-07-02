@@ -8,6 +8,16 @@ A practical style and idiom guide for writing Odin, distilled from:
 
 Where the sources give a rule, this guide states it. Where they give rationale, it summarizes the "why" so the rules are memorable rather than arbitrary. Full source links are listed at the end. Guidance on configuring AI coding agents to follow this style lives in its own section (§13) so the rest of the document stays language-focused.
 
+### Ready-to-use files in this repo
+
+This repository ships the configuration so you don't have to hand-write it. Copy these into your own project's root:
+
+- **[`odin-rules.md`](odin-rules.md)** — the style rules distilled into a short, imperative block for AI coding agents. Copy (or symlink) it to **`CLAUDE.md`** and/or **`AGENTS.md`**, whichever your tool reads (§13).
+- **[`odinfmt.json`](odinfmt.json)** — `odinfmt` formatter configuration (tabs, K&R braces, sorted imports) so every contributor formats identically (§12).
+- **[`ols.json`](ols.json)** — OLS (Odin Language Server) configuration, wired to run the vet/style checks as you type (§12).
+
+There is also a complete, runnable example under **[`examples/cats/`](examples/cats/)** — a small CLI that applies every section of this guide, with its own `CLAUDE.md`, `odinfmt.json`, `ols.json`, and a `mise.toml` of common commands. Start there to see the rules in real code.
+
 ---
 
 ## 1. Design principles: how to approach Odin
@@ -401,6 +411,8 @@ Put an `ols.json` at the workspace root so the server can index your collections
 
 You can pass checker flags through OLS to keep the editor honest with the project's style — e.g. `checker_args` / init options set to `-strict-style` so you see style violations as you type.
 
+A ready-to-use [`ols.json`](ols.json) lives at the root of this repo (its `checker_args` already carry the §2 flags). Copy it into your project's workspace root and adjust `collections`/`checker_path` to match your layout.
+
 ### Formatting with `odinfmt`
 
 OLS bundles **odinfmt**, the formatter (enable with `enable_format`, on by default). Configure it via an `odinfmt.json` at the repo root and, ideally, run it on save so formatting is never a manual chore:
@@ -416,6 +428,8 @@ OLS bundles **odinfmt**, the formatter (enable with `enable_format`, on by defau
 
 Keep `"tabs": true` to match the tabs-for-indentation rule (§4). Other useful options include `sort_imports`, `brace_style` (`K_And_R` matches §4), `indent_cases`, and `align_struct_fields`. A shared `odinfmt.json` in the repo means every contributor formats identically.
 
+This repo ships a ready-to-use [`odinfmt.json`](odinfmt.json) (tabs, `K_And_R` braces, sorted imports, 100-column width) — copy it to your project root and run `odinfmt` on save.
+
 ---
 
 ## 13. Configuring AI coding agents
@@ -424,7 +438,14 @@ To make an AI coding assistant follow this style, drop a rules file at the repos
 
 Also point the agent at the project's tooling so its output matches everyone else's: have it build with the vet flags (§2) and run `odinfmt` (§12) before considering a change done.
 
-Copy the block below into `CLAUDE.md` (or `AGENTS.md`):
+This repo ships the rules block below as a standalone [`odin-rules.md`](odin-rules.md). The quickest setup is to copy it straight to `CLAUDE.md` and/or `AGENTS.md` in your project root:
+
+```sh
+cp odin-rules.md CLAUDE.md   # for Claude Code / Claude
+cp odin-rules.md AGENTS.md   # for tools that read AGENTS.md
+```
+
+The [`examples/cats/`](examples/cats/) project shows this in place. For reference, the full rules block is:
 
 ```md
 ## Odin Code Style
